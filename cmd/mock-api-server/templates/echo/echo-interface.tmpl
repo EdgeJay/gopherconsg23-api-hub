@@ -1,0 +1,26 @@
+// ServerInterface represents all server handlers.
+type ServerInterface interface {
+{{range .}}{{.SummaryAsComment }}
+// ({{.Method}} {{.Path}})
+{{.OperationId}}(ctx echo.Context{{genParamArgs .PathParams}}{{if .RequiresParamObject}}, params {{.OperationId}}Params{{end}}) error
+{{end}}
+}
+
+type MockDataMapping map[string]string
+
+type MockServerInterface struct{
+	mapping *MockDataMapping
+}
+
+{{range .}}func (si *MockServerInterface) {{.OperationId}}(ctx echo.Context{{genParamArgs .PathParams}}{{if .RequiresParamObject}}, params {{.OperationId}}Params{{end}}) error {
+	if si.mapping != nil {
+		if str, ok := (*si.mapping)[ctx.Request().Method+":200:"+ctx.Request().URL.Path]; ok {
+			var v interface{}
+			if err := json.Unmarshal([]byte(str), &v); err == nil {
+				return ctx.JSON(200, v)
+			}
+		}
+	}
+	return echo.NewHTTPError(http.StatusInternalServerError, "Missing mock data")
+}
+{{end}}

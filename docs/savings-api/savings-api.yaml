@@ -7,6 +7,7 @@ servers:
 paths:
   /savings-records:
     get:
+      x-mock-mapping-file: './mocks/mappings.yaml'
       description: >
         Endpoint to retrieve resident's savings record
       operationId: getResidentSavingsRecords

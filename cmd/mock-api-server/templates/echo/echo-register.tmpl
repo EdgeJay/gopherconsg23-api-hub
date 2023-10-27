@@ -31,3 +31,10 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 {{range .}}router.{{.Method}}(baseURL + "{{.Path | swaggerUriToEchoUri}}", wrapper.{{.OperationId}})
 {{end}}
 }
+
+// Wrapper around call to RegisterHandlers
+// and supply handlers with mock data
+func RegisterHandlersWithMockData(router EchoRouter, mapping *MockDataMapping) {
+	si := &MockServerInterface{mapping}
+	RegisterHandlers(router, si)
+}

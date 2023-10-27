@@ -28,3 +28,12 @@ go.work
 *.cer
 *.pem
 *.key
+
+# Generated files
+**/server.go
+
+# Build folders
+build/
+
+# Log files
+*.log
