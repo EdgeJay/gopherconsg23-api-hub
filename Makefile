@@ -16,7 +16,9 @@ build-mock-savings-api-logged:
 	@docker build --no-cache --progress=plain -t mock-savings-api:latest -f ./scripts/docker/mock_api_server.Dockerfile . &> build.log
 
 run-mock-savings-api:
-	@docker run -p 1337:1337 -d --rm --name mock-savings-api mock-savings-api:latest
+	@docker run -v `pwd`/docs/savings-api:/app/docs/savings-api \
+	-p 1337:1337 -it --name mock-savings-api mock-savings-api:latest \
+	/app/docs/savings-api/savings-api.yaml
 
 stop-mock-savings-api:
 	@docker stop mock-savings-api
