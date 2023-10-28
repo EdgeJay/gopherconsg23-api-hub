@@ -20,8 +20,7 @@ build-mock-savings-api:
 
 run-docker-mock-savings-api:
 	@docker run -v `pwd`/docs/savings-api:/app/docs/savings-api \
-	-p 1338:1338 -it --name mock-savings-api mock-savings-api:latest \
-	1338 \
+	-p 1337:1337 -it --name mock-savings-api mock-savings-api:latest \
 	/app/docs/savings-api/savings-api.yaml
 
 stop-docker-mock-savings-api:
