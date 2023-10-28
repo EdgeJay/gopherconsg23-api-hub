@@ -34,7 +34,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 
 // Wrapper around call to RegisterHandlers
 // and supply handlers with mock data
-func RegisterHandlersWithMockData(router EchoRouter, mapping *MockDataMapping) {
+func RegisterHandlersWithMockData(router EchoRouter, mapping *mockapiserver.MockDataMapping) {
 	si := &MockServerInterface{mapping}
 	RegisterHandlers(router, si)
 }

@@ -6,10 +6,8 @@ type ServerInterface interface {
 {{end}}
 }
 
-type MockDataMapping map[string]string
-
 type MockServerInterface struct{
-	mapping *MockDataMapping
+	mapping *mockapiserver.MockDataMapping
 }
 
 {{range .}}func (si *MockServerInterface) {{.OperationId}}(ctx echo.Context{{genParamArgs .PathParams}}{{if .RequiresParamObject}}, params {{.OperationId}}Params{{end}}) error {

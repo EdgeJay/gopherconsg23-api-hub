@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/EdgeJay/gopherconsg23-api-hub/internal/mockapiserver"
 	"github.com/labstack/echo/v4"
 	"github.com/pb33f/libopenapi"
 	v3high "github.com/pb33f/libopenapi/datamodel/high/v3"
@@ -26,7 +27,7 @@ func retrieveAppFlags() AppFlags {
 }
 
 func addMockDataForMethod(
-	mapping *MockDataMapping,
+	mapping *mockapiserver.MockDataMapping,
 	generator *renderer.MockGenerator,
 	model *libopenapi.DocumentModel[v3high.Document],
 	path, method string,
@@ -56,7 +57,7 @@ func addMockDataForMethod(
 }
 
 func addMockDataForPath(
-	mapping *MockDataMapping,
+	mapping *mockapiserver.MockDataMapping,
 	generator *renderer.MockGenerator,
 	model *libopenapi.DocumentModel[v3high.Document],
 	path string,
@@ -90,7 +91,7 @@ func main() {
 	v3Model, _ := document.BuildV3Model()
 
 	// iterate through all paths
-	mockDataMapping := &MockDataMapping{}
+	mockDataMapping := &mockapiserver.MockDataMapping{}
 	for path, pathItem := range v3Model.Model.Paths.PathItems {
 		addMockDataForPath(mockDataMapping, mg, v3Model, path, pathItem)
 	}
