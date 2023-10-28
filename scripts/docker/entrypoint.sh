@@ -15,14 +15,14 @@ generate_input_hash () {
 
 init_server () {
     oapi-codegen \
-        -templates /app/templates/mock_api_server/ \
+        -templates /app/templates/mockapiserver/ \
         -generate types,server \
         -package main \
-        $INPUT_FILE > /app/cmd/mock_api_server/server.go
+        $INPUT_FILE > /app/cmd/mockapiserver/server.go
 
     echo "Mock server codebase generated, re-building server..."
 
-    CGO_ENABLED=0 GOOS=linux go build -o /app/build/mock-api-server /app/cmd/mock_api_server/*.go
+    CGO_ENABLED=0 GOOS=linux go build -o /app/build/mockapiserver /app/cmd/mockapiserver/*.go
 
     echo "Server re-built"
 }
@@ -39,4 +39,4 @@ else
 fi
 
 echo "Starting up server..."
-/app/build/mock-api-server -input $INPUT_FILE
+/app/build/mockapiserver -input $INPUT_FILE
