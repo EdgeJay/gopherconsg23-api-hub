@@ -2,9 +2,11 @@
 
 set -e
 
-INPUT_FILE="$1"
+SERVER_PORT="$1"
+INPUT_FILE="$2"
 INPUT_HASH_FILE="/app/input_file.sha256"
 
+echo "Server port set to $SERVER_PORT"
 echo "Loading OpenAPI specs file from $INPUT_FILE"
 
 generate_input_hash () {
@@ -39,4 +41,4 @@ else
 fi
 
 echo "Starting up server..."
-/app/build/mockapiserver -input $INPUT_FILE
+/app/build/mockapiserver -input $INPUT_FILE -port $SERVER_PORT
