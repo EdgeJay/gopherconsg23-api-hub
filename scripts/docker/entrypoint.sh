@@ -15,7 +15,7 @@ generate_input_hash () {
 
 init_server () {
     oapi-codegen \
-        -templates /app/cmd/mock-api-server/templates/ \
+        -templates /app/templates/mock-api-server/ \
         -generate types,server \
         -package main \
         $INPUT_FILE > /app/cmd/mock-api-server/server.go

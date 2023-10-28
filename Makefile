@@ -1,6 +1,6 @@
 generate-mock-api-server:
 	@oapi-codegen \
-	-templates ./cmd/mock-api-server/templates/ \
+	-templates ./templates/mock-api-server/ \
 	-generate types,server \
 	-package main \
 	./docs/savings-api/savings-api.yaml > ./cmd/mock-api-server/server.go
