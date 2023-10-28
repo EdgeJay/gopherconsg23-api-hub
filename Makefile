@@ -10,10 +10,10 @@ start-mock-savings-api: generate-mock-api-server
 	@go run cmd/mockapiserver/*.go -input ./docs/savings-api/savings-api.yaml
 
 build-docker-mock-savings-api:
-	@docker build -t mock-savings-api:latest -f ./scripts/docker/mock_api_server.Dockerfile .
+	@docker build -t mock-savings-api:latest -f ./scripts/docker/mockapiserver.Dockerfile .
 
 build-docker-mock-savings-api-logged:
-	@docker build --no-cache --progress=plain -t mock-savings-api:latest -f ./scripts/docker/mock_api_server.Dockerfile . &> build.log
+	@docker build --no-cache --progress=plain -t mock-savings-api:latest -f ./scripts/docker/mockapiserver.Dockerfile . &> build.log
 
 build-mock-savings-api:
 	@go build -o ./build/mockapiserver ./cmd/mockapiserver/*.go
