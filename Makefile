@@ -1,13 +1,13 @@
 generate-mock-api-server:
 	@oapi-codegen \
-	-templates ./templates/mock-api-server/ \
+	-templates ./templates/mock_api_server/ \
 	-generate types,server \
 	-package main \
-	./docs/savings-api/savings-api.yaml > ./cmd/mock-api-server/server.go
+	./docs/savings-api/savings-api.yaml > ./cmd/mock_api_server/server.go
 	@echo "Mock server codebase generated"
 
 start-mock-savings-api: generate-mock-api-server
-	@go run cmd/mock-api-server/*.go -input ./docs/savings-api/savings-api.yaml
+	@go run cmd/mock_api_server/*.go -input ./docs/savings-api/savings-api.yaml
 
 build-mock-savings-api:
 	@docker build -t mock-savings-api:latest -f ./scripts/docker/mock_api_server.Dockerfile .

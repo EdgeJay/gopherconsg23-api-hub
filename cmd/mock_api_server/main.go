@@ -89,10 +89,6 @@ func main() {
 	fmt.Println("Create doc error:", err)
 	v3Model, _ := document.BuildV3Model()
 
-	// get the index
-	// index := v3Model.Index
-	// fmt.Println(index.GetAllReferenceSchemas())
-
 	// iterate through all paths
 	mockDataMapping := &MockDataMapping{}
 	for path, pathItem := range v3Model.Model.Paths.PathItems {
