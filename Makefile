@@ -26,4 +26,4 @@ run-docker-mock-savings-api:
 stop-docker-mock-savings-api:
 	@docker stop mock-savings-api
 
-.PHONY: start-mock-savings-api generate-mock-api-server build-mock-savings-api build-mock-savings-api-logged run-mock-savings-api
+.PHONY: start-mock-savings-api generate-mock-api-server build-docker-mock-savings-api build-docker-mock-savings-api-logged build-mock-savings-api build-mock-savings-api-logged run-docker-mock-savings-api stop-docker-mock-savings-api
