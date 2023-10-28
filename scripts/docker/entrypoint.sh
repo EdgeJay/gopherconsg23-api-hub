@@ -3,7 +3,7 @@
 set -e
 
 INPUT_FILE="$1"
-SERVER_PORT="$2"
+SERVER_PORT="${2:-1337}"
 INPUT_HASH_FILE="/app/input_file.sha256"
 
 echo "Server port set to $SERVER_PORT"
