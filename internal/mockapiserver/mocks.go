@@ -1,7 +1,6 @@
 package mockapiserver
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/pb33f/libopenapi"
@@ -65,8 +64,6 @@ func addMockDataForMethod(
 	op *v3high.Operation,
 ) {
 	if op != nil {
-
-		fmt.Println(op.Extensions["x-mock-mapping-file"])
 
 		// iterate thru HTTP status codes
 		for code, res := range op.Responses.Codes {

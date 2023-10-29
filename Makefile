@@ -6,6 +6,9 @@ generate-mock-api-server:
 	./docs/savings-api/savings-api.yaml > ./cmd/mockapiserver/server.go
 	@echo "Mock server codebase generated"
 
+start-mock-savings-api-without-generation:
+	@go run cmd/mockapiserver/*.go -input ./docs/savings-api/savings-api.yaml
+
 start-mock-savings-api: generate-mock-api-server
 	@go run cmd/mockapiserver/*.go -input ./docs/savings-api/savings-api.yaml
 

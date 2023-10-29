@@ -11,13 +11,8 @@ type MockServerInterface struct{
 }
 
 {{range .}}func (si *MockServerInterface) {{.OperationId}}(ctx echo.Context{{genParamArgs .PathParams}}{{if .RequiresParamObject}}, params {{.OperationId}}Params{{end}}) error {
-	if si.mapping != nil {
-		if str, ok := (*si.mapping)[ctx.Request().Method+":200:"+ctx.Request().URL.Path]; ok {
-			var v interface{}
-			if err := json.Unmarshal([]byte(str), &v); err == nil {
-				return ctx.JSON(200, v)
-			}
-		}
+	if v, err := mockapiserver.GetMockDataForRequest(si.mapping, http.StatusOK, ctx.Request()); err == nil {
+		return ctx.JSON(http.StatusOK, v)
 	}
 	return echo.NewHTTPError(http.StatusInternalServerError, "Missing mock data")
 }
