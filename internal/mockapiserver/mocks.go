@@ -1,11 +1,16 @@
 package mockapiserver
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
+	"github.com/labstack/gommon/log"
 	"github.com/pb33f/libopenapi"
+	"github.com/pb33f/libopenapi/datamodel"
 	v3high "github.com/pb33f/libopenapi/datamodel/high/v3"
 	"github.com/pb33f/libopenapi/renderer"
+	"gopkg.in/yaml.v3"
 )
 
 func NewJSONMockGenerator(prettyPrint bool) *renderer.MockGenerator {
@@ -27,7 +32,15 @@ func NewOpenAPIV3ModelFromFile(appFlags AppFlags) *libopenapi.DocumentModel[v3hi
 	}
 
 	// create a new document from specification and build a v3 model.
-	document, err := libopenapi.NewDocument(inputFileBytes)
+	basePath, err := os.Getwd()
+	if err != nil {
+		LogFatalError("Document creation failed, cannot get working directory", err)
+	}
+
+	document, err := libopenapi.NewDocumentWithConfiguration(inputFileBytes, &datamodel.DocumentConfiguration{
+		AllowFileReferences: true,
+		BasePath:            basePath,
+	})
 	if err != nil {
 		LogFatalError("Document creation failed", err)
 	}
@@ -68,16 +81,18 @@ func addMockDataForMethod(
 		// iterate thru HTTP status codes
 		for code, res := range op.Responses.Codes {
 
+			key := method + ":" + code + ":" + path
+
 			// iterate thru Content-Type
 			for _, mediaType := range res.Content {
 
-				key := method + ":" + code + ":" + path
+				schema := getSchemaForMockGeneration(mediaType)
 
-				// build schema
-				schema := mediaType.Schema.Schema()
 				// generate a mock of the schema
 				if b, err := generator.GenerateMock(schema, ""); err == nil {
 					(*mapping)[key] = string(b)
+				} else {
+					log.Printf("Cannot generator mock, %v\n", err)
 				}
 			}
 		}
@@ -99,4 +114,37 @@ func addMockDataForPath(
 	addMockDataForMethod(mapping, generator, model, path, http.MethodHead, pathItem.Head)
 	addMockDataForMethod(mapping, generator, model, path, http.MethodPatch, pathItem.Patch)
 	addMockDataForMethod(mapping, generator, model, path, http.MethodTrace, pathItem.Trace)
+}
+
+// This function helps to choose, resolve and return best node
+// for mock generation.
+// If mediaType has examples referencing external sources,
+// this function will retrieve the file as well.
+func getSchemaForMockGeneration(mediaType *v3high.MediaType) any {
+	if mediaType != nil {
+
+		if mappingFilePath, ok := mediaType.Extensions["x-examples-mapping"].(string); ok {
+			if b, err := os.ReadFile(mappingFilePath); err == nil {
+				var examplesMapping MockDataExamplesMapping
+				yaml.Unmarshal(b, &examplesMapping)
+				fmt.Println(examplesMapping)
+			}
+		}
+
+		if mediaType.Examples != nil && len(mediaType.Examples) > 0 {
+			for _, ex := range mediaType.Examples {
+
+				if ex.ExternalValue != "" {
+					// extract examples from file, then overwrite value in mediaType
+					if b, err := os.ReadFile(ex.ExternalValue); err == nil {
+						ex.Value = string(b)
+					}
+				}
+			}
+			return mediaType
+		} else {
+			return mediaType.Schema.Schema()
+		}
+	}
+	return nil
 }

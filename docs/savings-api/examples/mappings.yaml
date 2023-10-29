@@ -1,0 +1,9 @@
+mappings:
+  hasSavingRecords:
+    parameters:
+      - in: query
+        name: page
+        match: '^\d$'
+      - in: query
+        name: size
+        match: '^\d$'
