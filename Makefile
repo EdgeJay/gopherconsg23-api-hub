@@ -1,3 +1,10 @@
+generate-mock-api-data:
+	@go run cmd/mockgenerator/*.go \
+	-input ./docs/savings-api/savings-api.yaml \
+	-method GET \
+	-path /savings-records \
+	-status 200
+
 generate-mock-api-server:
 	@oapi-codegen \
 	-templates ./templates/mockapiserver/ \
@@ -29,4 +36,4 @@ run-docker-mock-savings-api:
 stop-docker-mock-savings-api:
 	@docker stop mock-savings-api
 
-.PHONY: start-mock-savings-api generate-mock-api-server build-docker-mock-savings-api build-docker-mock-savings-api-logged build-mock-savings-api build-mock-savings-api-logged run-docker-mock-savings-api stop-docker-mock-savings-api
+.PHONY: generate-mock-api-data start-mock-savings-api start-mock-savings-api-without-generation generate-mock-api-server build-docker-mock-savings-api build-docker-mock-savings-api-logged build-mock-savings-api build-mock-savings-api-logged run-docker-mock-savings-api stop-docker-mock-savings-api
