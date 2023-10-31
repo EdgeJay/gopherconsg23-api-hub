@@ -3,7 +3,7 @@ info:
   title: Housing API
   version: '1.0.0'
 servers:
-  - url: https://housing-api.example
+  - url: http://localhost:1338
 paths:
   /towns:
     get:

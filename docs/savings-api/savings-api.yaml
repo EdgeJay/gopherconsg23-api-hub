@@ -3,7 +3,7 @@ info:
   title: Savings API
   version: '1.0.0'
 servers:
-  - url: https://savings-api.example
+  - url: http://localhost:1337
 paths:
   /savings-records:
     get:
@@ -41,8 +41,6 @@ components:
   schemas:
     GetSavingsRecordsSuccessResponse:
       type: object
-      require:
-        - data
       properties:
         data:
           type: array

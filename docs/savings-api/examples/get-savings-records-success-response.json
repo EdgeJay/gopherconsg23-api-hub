@@ -1,17 +1,17 @@
 {
   "data": [
     {
-      "created_on": "2023-01-01T00:00:00.000Z",
+      "created_on": "2023-01-01T12:00:00Z",
       "record_type": "salary",
       "amount": 1000.12
     },
     {
-      "created_on": "2023-02-01T00:00:00.000Z",
+      "created_on": "2023-02-01T11:34:00Z",
       "record_type": "self",
       "amount": 750.00
     },
     {
-      "created_on": "2023-02-05T00:00:00.000Z",
+      "created_on": "2023-02-05T22:50:00Z",
       "record_type": "offset",
       "amount": 500.00
     }
