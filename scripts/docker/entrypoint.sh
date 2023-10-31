@@ -20,7 +20,7 @@ init_server () {
         -templates /app/templates/mockapiserver/ \
         -generate types,server \
         -package main \
-        $INPUT_FILE > /app/cmd/mockapiserver/server.go
+        $INPUT_FILE > /app/cmd/mockapiserver/server.gen.go
 
     echo "Mock server codebase generated, re-building server..."
 

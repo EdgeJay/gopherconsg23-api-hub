@@ -12,7 +12,7 @@ generate-mock-api-server:
 	-templates ./templates/mockapiserver/ \
 	-generate types,server \
 	-package main \
-	${MOCK_API_FILE} > ./cmd/mockapiserver/server.go
+	${MOCK_API_FILE} > ./cmd/mockapiserver/server.gen.go
 	@echo "Mock server codebase generated"
 
 start-mock-api-without-generation:
@@ -52,4 +52,11 @@ stop-docker-mock-savings-api:
 stop-docker-mock-housing-api:
 	@docker stop mock-housing-api
 
-.PHONY: generate-mock-api-data start-mock-api start-mock-api-without-generation generate-mock-api-server build-docker-mock-api build-docker-mock-api-logged build-mock-api run-docker-mock-savings-api start-docker-mock-savings-api stop-docker-mock-savings-api
+generate-mock-codegen-client:
+	@oapi-codegen \
+	-generate types,client \
+	-package main \
+	${MOCK_API_FILE} > ./cmd/mockcodegenclient/client.gen.go
+	@echo "Mock client codebase generated"
+
+.PHONY: generate-mock-api-data start-mock-api start-mock-api-without-generation generate-mock-api-server build-docker-mock-api build-docker-mock-api-logged build-mock-api run-docker-mock-savings-api start-docker-mock-savings-api stop-docker-mock-savings-api generate-mock-codegen-client

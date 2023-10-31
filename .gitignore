@@ -30,7 +30,7 @@ go.work
 *.key
 
 # Generated files
-cmd/**/server.go
+*.gen.go
 
 # Build folders
 build/
