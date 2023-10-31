@@ -2,13 +2,8 @@ package mockgenerator
 
 import (
 	"flag"
-	"log"
 	"os"
 )
-
-func LogFatalError(message string, err interface{}) {
-	log.Fatalf("%s: %v\n", message, err)
-}
 
 // Retrieve flags passed to app during initialisation
 func NewAppFlags() AppFlags {

@@ -4,15 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
 )
-
-func LogFatalError(message string, err interface{}) {
-	log.Fatalf("%s: %v\n", message, err)
-}
 
 // Retrieve flags passed to app during initialisation
 func NewAppFlags() AppFlags {

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/EdgeJay/gopherconsg23-api-hub/internal/common"
 	"github.com/labstack/gommon/log"
 	"github.com/pb33f/libopenapi"
 	"github.com/pb33f/libopenapi/datamodel"
@@ -28,13 +29,13 @@ func NewJSONMockGenerator(prettyPrint bool) *renderer.MockGenerator {
 func NewOpenAPIV3ModelFromFile(appFlags AppFlags) *libopenapi.DocumentModel[v3high.Document] {
 	inputFileBytes, err := GetInputFileFromAppFlags(appFlags)
 	if err != nil {
-		LogFatalError("Input failed retrieval failed", err)
+		common.LogFatalError("Input failed retrieval failed", err)
 	}
 
 	// create a new document from specification and build a v3 model.
 	basePath, err := os.Getwd()
 	if err != nil {
-		LogFatalError("Document creation failed, cannot get working directory", err)
+		common.LogFatalError("Document creation failed, cannot get working directory", err)
 	}
 
 	document, err := libopenapi.NewDocumentWithConfiguration(inputFileBytes, &datamodel.DocumentConfiguration{
@@ -42,12 +43,12 @@ func NewOpenAPIV3ModelFromFile(appFlags AppFlags) *libopenapi.DocumentModel[v3hi
 		BasePath:            basePath,
 	})
 	if err != nil {
-		LogFatalError("Document creation failed", err)
+		common.LogFatalError("Document creation failed", err)
 	}
 
 	model, errs := document.BuildV3Model()
 	if model == nil {
-		LogFatalError("Model creation failed", errs)
+		common.LogFatalError("Model creation failed", errs)
 	}
 
 	return model

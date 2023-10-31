@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/EdgeJay/gopherconsg23-api-hub/internal/common"
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/mockapiserver"
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/mockgenerator"
 )
@@ -32,9 +33,9 @@ func main() {
 		if b, err := json.MarshalIndent(mockData, "", "  "); err == nil {
 			log.Printf("%v\n", string(b))
 		} else {
-			mockgenerator.LogFatalError("Unable to generate mock data", err)
+			common.LogFatalError("Unable to generate mock data", err)
 		}
 	} else {
-		mockgenerator.LogFatalError("Unable to retrieve mock data", err)
+		common.LogFatalError("Unable to retrieve mock data", err)
 	}
 }
