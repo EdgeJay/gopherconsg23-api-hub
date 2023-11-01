@@ -22,10 +22,10 @@ start-mock-api: generate-mock-api-server
 	@go run cmd/mockapiserver/*.go -input ${MOCK_API_FILE}
 
 build-docker-mock-api:
-	@docker build -t mock-api:latest -f ./scripts/docker/mockapiserver.Dockerfile .
+	@docker build -t mock-api:latest -f ./scripts/mockapiserver/.Dockerfile .
 
 build-docker-mock-api-logged:
-	@docker build --no-cache --progress=plain -t mock-savings-api:latest -f ./scripts/docker/mockapiserver.Dockerfile . &> build.log
+	@docker build --no-cache --progress=plain -t mock-savings-api:latest -f ./scripts/mockapiserver/.Dockerfile . &> build.log
 
 build-mock-api:
 	@go build -o ./build/mockapiserver ./cmd/mockapiserver/*.go
