@@ -5,14 +5,14 @@ import (
 	"log"
 	"os"
 
+	"github.com/EdgeJay/gopherconsg23-api-hub/internal/codegenclient"
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/common"
-	"github.com/EdgeJay/gopherconsg23-api-hub/internal/mockcodegenclient"
 	"github.com/pb33f/libopenapi"
 	validator "github.com/pb33f/libopenapi-validator"
 )
 
 func main() {
-	appFlags := mockcodegenclient.NewAppFlags()
+	appFlags := codegenclient.NewAppFlags()
 
 	// Load OpenAPI specs files
 	b, err := os.ReadFile(appFlags.InputFile)
@@ -73,7 +73,7 @@ func main() {
 		log.Println("http request validation passed")
 	}
 
-	client := mockcodegenclient.NewHttpClient()
+	client := codegenclient.NewHttpClient()
 	res, err := client.Do(req)
 	if err != nil {
 		common.LogFatalError("Unable to make http request", err)

@@ -56,10 +56,10 @@ generate-mock-codegen-client:
 	@oapi-codegen \
 	-generate types,client \
 	-package main \
-	${MOCK_API_FILE} > ./cmd/mockcodegenclient/client.gen.go
+	${MOCK_API_FILE} > ./cmd/codegenclient/client.gen.go
 	@echo "Mock client codebase generated"
 
-run-mock-codegen-client:
-	@go run ./cmd/mockcodegenclient/*.go -input ${MOCK_API_FILE}
+start-mock-codegen-client: generate-mock-codegen-client
+	@go run ./cmd/codegenclient/*.go -input ${MOCK_API_FILE}
 
-.PHONY: generate-mock-api-data start-mock-api start-mock-api-without-generation generate-mock-api-server build-docker-mock-api build-docker-mock-api-logged build-mock-api run-docker-mock-savings-api start-docker-mock-savings-api stop-docker-mock-savings-api generate-mock-codegen-client
+.PHONY: generate-mock-api-data start-mock-api start-mock-api-without-generation generate-mock-api-server build-docker-mock-api build-docker-mock-api-logged build-mock-api run-docker-mock-savings-api start-docker-mock-savings-api stop-docker-mock-savings-api generate-mock-codegen-client start-mock-codegen-client

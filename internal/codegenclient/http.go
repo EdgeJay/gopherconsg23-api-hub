@@ -1,4 +1,4 @@
-package mockcodegenclient
+package codegenclient
 
 import (
 	"net/http"
