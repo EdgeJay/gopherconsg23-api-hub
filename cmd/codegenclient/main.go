@@ -15,7 +15,7 @@ func main() {
 	appFlags := codegenclient.NewAppFlags()
 
 	// Load OpenAPI specs files
-	b, err := os.ReadFile(appFlags.InputFile)
+	b, err := os.ReadFile(appFlags.InputFile[0])
 	if err != nil {
 		common.LogFatalError("Unable to load OpenAPI specs file", err)
 	}
