@@ -52,14 +52,28 @@ stop-docker-mock-savings-api:
 stop-docker-mock-housing-api:
 	@docker stop mock-housing-api
 
-generate-mock-codegen-client:
+generate-codegen-client:
 	@oapi-codegen \
 	-generate types,client \
 	-package main \
 	${MOCK_API_FILE} > ./cmd/codegenclient/client.gen.go
 	@echo "Mock client codebase generated"
 
-start-mock-codegen-client: generate-mock-codegen-client
+start-codegen-client: generate-codegen-client
 	@go run ./cmd/codegenclient/*.go -input ${MOCK_API_FILE}
 
-.PHONY: generate-mock-api-data start-mock-api start-mock-api-without-generation generate-mock-api-server build-docker-mock-api build-docker-mock-api-logged build-mock-api run-docker-mock-savings-api start-docker-mock-savings-api stop-docker-mock-savings-api generate-mock-codegen-client start-mock-codegen-client
+generate-codegen-multi-client:
+	@mkdir -p ./cmd/codegenmulticlient/savings && \
+	mkdir -p ./cmd/codegenmulticlient/housing
+	@oapi-codegen \
+	-generate types,client \
+	-package savings \
+	./docs/savings-api/savings-api.yaml > ./cmd/codegenmulticlient/savings/client.gen.go
+	@oapi-codegen \
+	-generate types,client \
+	-package housing \
+	./docs/housing-api/housing-api.yaml > ./cmd/codegenmulticlient/housing/client.gen.go
+	@echo "Mock client codebase generated"
+
+start-codegen-multi-client: generate-codegen-multi-client
+	@go run ./cmd/codegenmulticlient/*.go -input ./docs/savings-api/savings-api.yaml -input ./docs/housing-api/housing-api.yaml

@@ -1,6 +1,12 @@
 package codegenclient
 
-import "flag"
+import (
+	"errors"
+	"flag"
+	"os"
+
+	"github.com/pb33f/libopenapi"
+)
 
 // Retrieve flags passed to app during initialisation
 func NewAppFlags() AppFlags {
@@ -9,4 +15,34 @@ func NewAppFlags() AppFlags {
 	flag.Parse()
 
 	return appFlags
+}
+
+func NewOpenApiDocumentFromFile(file string) (*libopenapi.Document, error) {
+	b, err := os.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+
+	doc, err := libopenapi.NewDocument(b)
+	if err != nil {
+		return nil, err
+	}
+
+	return &doc, nil
+}
+
+func GetBaseUrlFromDocument(doc *libopenapi.Document) (string, error) {
+	model, _ := (*doc).BuildV3Model()
+	if model == nil {
+		return "", errors.New("cannot create model")
+	}
+	return model.Model.Servers[0].URL, nil
+}
+
+func GetTitleFromDocument(doc *libopenapi.Document) (string, error) {
+	model, _ := (*doc).BuildV3Model()
+	if model == nil {
+		return "", errors.New("cannot create model")
+	}
+	return model.Model.Info.Title, nil
 }
