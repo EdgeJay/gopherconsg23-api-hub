@@ -11,20 +11,8 @@ paths:
         Endpoint to retrieve resident's savings record
       operationId: getResidentSavingsRecords
       parameters:
-        - in: query
-          name: page
-          required: false
-          schema:
-            type: integer
-            description: >
-              Page number to query records from. Default value is 1 if not specified.
-        - in: query
-          name: size
-          required: false
-          schema:
-            type: integer
-            description: >
-              Page size. Default value is 10 if not specified.
+        - $ref: '#/components/parameters/QueryPage'
+        - $ref: '#/components/parameters/QuerySize'
       responses:
         '200':
           description: OK
@@ -38,6 +26,23 @@ paths:
                   externalValue: './docs/savings-api/examples/get-savings-records-success-response.json'
 
 components:
+  parameters:
+    QueryPage:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        description: >
+          Page number to query records from. Default value is 1 if not specified.
+    QuerySize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        description: >
+          Page size. Default value is 10 if not specified.
   schemas:
     GetSavingsRecordsSuccessResponse:
       type: object
