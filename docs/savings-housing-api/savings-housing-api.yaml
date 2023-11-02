@@ -48,3 +48,5 @@ components:
           properties:
             savings:
               $ref: '../savings-api/savings-api.yaml#/components/schemas/GetSavingsRecordsSuccessResponse'
+            purchased_apartment:
+              $ref: '../housing-api/housing-api.yaml#/components/schemas/GetPurchasedApartmentSuccessResponse'
