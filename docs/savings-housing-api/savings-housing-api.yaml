@@ -19,7 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetCombinedDataResponse'
+                $ref: '#/components/schemas/GetCombinedDataSuccessResponse'
 
 components:
   parameters:
@@ -40,7 +40,7 @@ components:
         description: >
           Page size. Default value is 10 if not specified.
   schemas:
-    GetCombinedDataResponse:
+    GetCombinedDataSuccessResponse:
       type: object
       properties:
         data:

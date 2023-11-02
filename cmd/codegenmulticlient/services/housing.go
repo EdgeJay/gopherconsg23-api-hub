@@ -4,11 +4,12 @@ import (
 	"context"
 
 	"github.com/EdgeJay/gopherconsg23-api-hub/cmd/codegenmulticlient/housing"
+	"github.com/EdgeJay/gopherconsg23-api-hub/internal/codegenmulticlient"
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/common"
 )
 
 type HousingService struct {
-	Config *ServiceConfig
+	Config *codegenmulticlient.ServiceConfig
 }
 
 type PurchasedApartment struct {
@@ -18,7 +19,7 @@ type PurchasedApartment struct {
 	SalePeriodId string
 }
 
-func NewHousingService(config *ServiceConfig) *HousingService {
+func NewHousingService(config *codegenmulticlient.ServiceConfig) *HousingService {
 	return &HousingService{
 		Config: config,
 	}

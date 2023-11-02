@@ -5,15 +5,16 @@ import (
 
 	"github.com/EdgeJay/gopherconsg23-api-hub/cmd/codegenmulticlient/savings"
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/codegenclient"
+	"github.com/EdgeJay/gopherconsg23-api-hub/internal/codegenmulticlient"
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/common"
 )
 
 type SavingsService struct {
 	client *http.Client
-	Config *ServiceConfig
+	Config *codegenmulticlient.ServiceConfig
 }
 
-func NewSavingsService(config *ServiceConfig) *SavingsService {
+func NewSavingsService(config *codegenmulticlient.ServiceConfig) *SavingsService {
 	return &SavingsService{
 		client: codegenclient.NewHttpClient(),
 		Config: config,

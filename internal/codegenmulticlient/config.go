@@ -1,4 +1,4 @@
-package services
+package codegenmulticlient
 
 import (
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/codegenclient"

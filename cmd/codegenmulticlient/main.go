@@ -5,6 +5,7 @@ import (
 
 	"github.com/EdgeJay/gopherconsg23-api-hub/cmd/codegenmulticlient/services"
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/codegenclient"
+	"github.com/EdgeJay/gopherconsg23-api-hub/internal/codegenmulticlient"
 )
 
 const (
@@ -12,11 +13,11 @@ const (
 	HOUSING_API_TITLE = "Housing API"
 )
 
-func generateServicesFromFiles(files []string) *services.ServicesMapping {
-	mapping := make(services.ServicesMapping)
+func generateServicesFromFiles(files []string) *codegenmulticlient.ServicesMapping {
+	mapping := make(codegenmulticlient.ServicesMapping)
 
 	for _, file := range files {
-		config := services.NewServiceConfig(file)
+		config := codegenmulticlient.NewServiceConfig(file)
 		config.Load()
 
 		switch config.OpenApiDocTitle() {
