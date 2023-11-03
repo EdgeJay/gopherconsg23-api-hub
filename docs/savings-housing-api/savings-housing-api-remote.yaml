@@ -1,0 +1,52 @@
+openapi: '3.0.0'
+info:
+  title: Savings + Housing API
+  version: '1.0.0'
+servers:
+  - url: http://localhost:1339
+paths:
+  /combined-data:
+    get:
+      description: >
+        Endpoint to retrieve resident's savings and housing records
+      operationId: getCombinedData
+      parameters:
+        - $ref: '#/components/parameters/QueryPage'
+        - $ref: '#/components/parameters/QuerySize'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCombinedDataSuccessResponse'
+
+components:
+  parameters:
+    QueryPage:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        description: >
+          Page number to query records from. Default value is 1 if not specified.
+    QuerySize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        description: >
+          Page size. Default value is 10 if not specified.
+  schemas:
+    GetCombinedDataSuccessResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            savings:
+              $ref: 'http://localhost:1336/docs/savings-api/savings-api-remote.yaml#/components/schemas/GetSavingsRecordsSuccessResponse'
+            purchased_apartment:
+              $ref: 'http://localhost:1336/docs/housing-api/housing-api.yaml#/components/schemas/GetPurchasedApartmentSuccessResponse'

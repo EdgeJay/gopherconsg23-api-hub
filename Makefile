@@ -1,5 +1,12 @@
 include .env
 
+generate-petstore-demo:
+	@oapi-codegen \
+	-generate types,server,client \
+	-package main \
+	./demo/petstore-expanded.yaml > ./demo/petstore.gen.go
+	@echo "Petstore codebase generated"
+
 generate-mock-api-data:
 	@go run cmd/mockgenerator/*.go \
 	-input ${MOCK_API_FILE} \
@@ -77,3 +84,48 @@ generate-codegen-multi-client:
 
 start-codegen-multi-client: generate-codegen-multi-client
 	@go run ./cmd/codegenmulticlient/*.go -input ./docs/savings-api/savings-api.yaml -input ./docs/housing-api/housing-api.yaml
+
+generate-apihub:
+	@mkdir -p ./cmd/apihub/savings && \
+	mkdir -p ./cmd/apihub/housing
+	@oapi-codegen \
+	-generate types,client \
+	-package savings \
+	./docs/savings-api/savings-api.yaml > ./cmd/apihub/savings/client.gen.go
+	@oapi-codegen \
+	-generate types,client \
+	-package housing \
+	./docs/housing-api/housing-api.yaml > ./cmd/apihub/housing/client.gen.go
+	@oapi-codegen \
+	-generate types,client \
+	-package main \
+	-import-mapping ../savings-api/savings-api.yaml:github.com/EdgeJay/gopherconsg23-api-hub/cmd/apihub/savings,../housing-api/housing-api.yaml:github.com/EdgeJay/gopherconsg23-api-hub/cmd/apihub/housing \
+	./docs/savings-housing-api/savings-housing-api.yaml > ./cmd/apihub/combined.gen.go
+	@echo "Mock client codebase generated"
+
+generate-mock-api-combined:
+	@mkdir -p ./cmd/mockapicombined/savings && \
+	mkdir -p ./cmd/mockapicombined/housing
+	@oapi-codegen \
+	-templates ./templates/mockapiserver/ \
+	-generate types,server \
+	-package savings \
+	./docs/savings-api/savings-api.yaml > ./cmd/mockapicombined/savings/server.gen.go
+	@oapi-codegen \
+	-templates ./templates/mockapiserver/ \
+	-generate types,server \
+	-package housing \
+	./docs/housing-api/housing-api.yaml > ./cmd/mockapicombined/housing/server.gen.go
+	@oapi-codegen \
+	-templates ./templates/mockapiserver/ \
+	-generate types,server \
+	-package main \
+	-import-mapping ../savings-api/savings-api.yaml:github.com/EdgeJay/gopherconsg23-api-hub/cmd/mockapicombined/savings,../housing-api/housing-api.yaml:github.com/EdgeJay/gopherconsg23-api-hub/cmd/mockapicombined/housing \
+	./docs/savings-housing-api/savings-housing-api.yaml > ./cmd/mockapicombined/combined.gen.go
+	@echo "Mock server codebase generated"
+
+start-mock-api-combined: generate-mock-api-combined
+	@go run ./cmd/mockapicombined/*.go -input ./docs/savings-housing-api/savings-housing-api-remote.yaml -port 1339
+
+start-hosted-specs:
+	@go run ./cmd/hostedspecs/*.go

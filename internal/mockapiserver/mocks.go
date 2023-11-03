@@ -2,11 +2,12 @@ package mockapiserver
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/EdgeJay/gopherconsg23-api-hub/internal/common"
-	"github.com/labstack/gommon/log"
 	"github.com/pb33f/libopenapi"
 	"github.com/pb33f/libopenapi/datamodel"
 	v3high "github.com/pb33f/libopenapi/datamodel/high/v3"
@@ -39,8 +40,9 @@ func NewOpenAPIV3ModelFromFile(appFlags AppFlags) *libopenapi.DocumentModel[v3hi
 	}
 
 	document, err := libopenapi.NewDocumentWithConfiguration(inputFileBytes, &datamodel.DocumentConfiguration{
-		AllowFileReferences: true,
-		BasePath:            basePath,
+		AllowFileReferences:   true,
+		AllowRemoteReferences: true,
+		BasePath:              basePath,
 	})
 	if err != nil {
 		common.LogFatalError("Document creation failed", err)
@@ -136,9 +138,21 @@ func getSchemaForMockGeneration(mediaType *v3high.MediaType) any {
 			for _, ex := range mediaType.Examples {
 
 				if ex.ExternalValue != "" {
-					// extract examples from file, then overwrite value in mediaType
-					if b, err := os.ReadFile(ex.ExternalValue); err == nil {
-						ex.Value = string(b)
+					if ex.ExternalValue[:4] != "http" {
+						log.Println("loading file from local filesystem")
+						// extract examples from file, then overwrite value in mediaType
+						if b, err := os.ReadFile(ex.ExternalValue); err == nil {
+							ex.Value = string(b)
+						}
+					} else {
+						log.Println("loading file from remote server")
+
+						if res, err := http.Get(ex.ExternalValue); err == nil {
+							defer res.Body.Close()
+							if b, err := io.ReadAll(res.Body); err == nil {
+								ex.Value = string(b)
+							}
+						}
 					}
 				}
 			}
