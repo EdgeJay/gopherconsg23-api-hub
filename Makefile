@@ -85,6 +85,10 @@ generate-codegen-multi-client:
 start-codegen-multi-client: generate-codegen-multi-client
 	@go run ./cmd/codegenmulticlient/*.go -input ./docs/savings-api/savings-api.yaml -input ./docs/housing-api/housing-api.yaml
 
+reset-codegen-multi-client:
+	@rm -rf ./cmd/codegenmulticlient/housing
+	@rm -rf ./cmd/codegenmulticlient/savings
+
 generate-apihub:
 	@mkdir -p ./cmd/apihub/savings && \
 	mkdir -p ./cmd/apihub/housing
@@ -102,6 +106,9 @@ generate-apihub:
 	-import-mapping ../savings-api/savings-api.yaml:github.com/EdgeJay/gopherconsg23-api-hub/cmd/apihub/savings,../housing-api/housing-api.yaml:github.com/EdgeJay/gopherconsg23-api-hub/cmd/apihub/housing \
 	./docs/savings-housing-api/savings-housing-api.yaml > ./cmd/apihub/combined.gen.go
 	@echo "Mock client codebase generated"
+
+start-apihub:
+	@go run ./cmd/apihub/*.go -input ./docs/savings-housing-api/savings-housing-api-remote.yaml
 
 generate-mock-api-combined:
 	@mkdir -p ./cmd/mockapicombined/savings && \
