@@ -25,6 +25,7 @@ func NewApiService(file string) *ApiService {
 func (svc *ApiService) Load() {
 	// Load OpenAPI specs file
 	svc.Config = codegenmulticlient.NewServiceConfig(svc.InputFile)
+	svc.Config.Load()
 }
 
 func (svc *ApiService) GetResidentData() interface{} {
