@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/pb33f/libopenapi"
+	"github.com/pb33f/libopenapi/datamodel"
 )
 
 // Retrieve flags passed to app during initialisation
@@ -23,7 +24,10 @@ func NewOpenApiDocumentFromFile(file string) (*libopenapi.Document, error) {
 		return nil, err
 	}
 
-	doc, err := libopenapi.NewDocument(b)
+	doc, err := libopenapi.NewDocumentWithConfiguration(b, &datamodel.DocumentConfiguration{
+		AllowFileReferences:   true,
+		AllowRemoteReferences: true,
+	})
 	if err != nil {
 		return nil, err
 	}
